@@ -66,6 +66,7 @@ cc_library_static {
         "libadbd",
         "libbase",
         "libcrypto",
+	"libssl",
         "libfusesideload",
     ],
 }
