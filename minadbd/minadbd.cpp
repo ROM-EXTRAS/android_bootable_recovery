@@ -85,10 +85,10 @@ int main(int argc, char** argv) {
     int port;
     if (sscanf(prop_port.c_str(), "%d", &port) == 1 && port > 0) {
         // Listen on TCP port specified by service.adb.tcp.port property.
-        local_init(port);
+        local_init(android::base::StringPrintf("tcp:%d", port));
     } else if (!is_usb) {
         // Listen on default port.
-        local_init(DEFAULT_ADB_LOCAL_TRANSPORT_PORT);
+        local_init(android::base::StringPrintf("tcp:%d", DEFAULT_ADB_LOCAL_TRANSPORT_PORT));
     }
 
   VLOG(ADB) << "Event loop starting";
