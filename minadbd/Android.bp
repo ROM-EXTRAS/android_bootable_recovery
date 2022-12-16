@@ -65,6 +65,7 @@ cc_library_static {
     shared_libs: [
         "libadbd",
         "libbase",
+	"libssl",
         "libcrypto",
 	"libssl",
         "libfusesideload",
@@ -99,6 +100,7 @@ cc_binary {
 
     shared_libs: [
         "libbase",
+	"libssl",
         "libcrypto",
 	"libssl",
     ],

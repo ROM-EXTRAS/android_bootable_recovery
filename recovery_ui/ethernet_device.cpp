@@ -46,9 +46,14 @@ void EthernetDevice::PreRecovery() {
 
 void EthernetDevice::PreFastboot() {
   android::base::SetProperty("fastbootd.protocol", "tcp");
-
+  struct ifaddrs* ifaddr;
+  getifaddrs(&ifaddr);
   if (SetInterfaceFlags(IFF_UP, 0) < 0) {
-    LOG(ERROR) << "Failed to bring up interface";
+    std::unique_ptr<struct ifaddrs, decltype(&freeifaddrs)> guard{ ifaddr, freeifaddrs };
+      for (struct ifaddrs* ifa = ifaddr; ifa != nullptr; ifa = ifa->ifa_next) {
+    PLOG(ERROR) << "Detected interface " << ifa->ifa_name;
+  }
+    LOG(ERROR) << "Failed to bring up interface ";
     return;
   }
 
@@ -96,6 +101,7 @@ void EthernetDevice::SetTitleIPv6LinkLocalAddress(const bool interface_up) {
 
   std::unique_ptr<struct ifaddrs, decltype(&freeifaddrs)> guard{ ifaddr, freeifaddrs };
   for (struct ifaddrs* ifa = ifaddr; ifa != nullptr; ifa = ifa->ifa_next) {
+    PLOG(ERROR) << "Detected interface " << ifa->ifa_name;
     if (ifa->ifa_addr->sa_family != AF_INET6 || interface != ifa->ifa_name) {
       continue;
     }

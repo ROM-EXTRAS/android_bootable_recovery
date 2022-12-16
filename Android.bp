@@ -103,6 +103,7 @@ cc_defaults {
         "liblp",
         "liblog",
         "libprotobuf-cpp-lite",
+	"libssl",
         "libziparchive",
         "libvolume_manager",
     ],
